@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3D268A26-95D2-48C3-8A62-EB8D32658E33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{441F76EA-E9B6-4FD8-8B1B-D149C401D293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceFabric.Utils.Ipc", "src\ServiceFabric.Utils.Ipc\ServiceFabric.Utils.Ipc.csproj", "{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8E64842-C0E6-498E-AC11-AF1BFD335BD9} = {3D268A26-95D2-48C3-8A62-EB8D32658E33}
+	EndGlobalSection
+EndGlobal

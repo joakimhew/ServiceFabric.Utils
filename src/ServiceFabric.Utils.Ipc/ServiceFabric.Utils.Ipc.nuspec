@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.2.2</version>
+    <title>$title$</title>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utilities like IPC for service fabric</description>
+    <authors>joakim.hansson@tretton37.com</authors>
+    <releaseNotes>Corrections done to api response messages</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>ServiceFabric Utitlities IPC</tags>
+  </metadata>
+</package>
