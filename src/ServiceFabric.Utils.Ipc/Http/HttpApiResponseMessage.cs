@@ -15,12 +15,15 @@ namespace ServiceFabric.Utils.Ipc.Http
         private readonly HttpRequestMessage _requestMessage;
         private readonly HttpStatusCode _statusCode;
         private readonly object _message;
+        private readonly object _additionalInfo;
 
-        protected HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode, object message)
+        protected HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode, 
+            object message, object additionalInfo = null)
         {
             _requestMessage = request;
             _statusCode = statusCode;
             _message = message;
+            _additionalInfo = additionalInfo;
         }
 
         public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
@@ -28,7 +31,8 @@ namespace ServiceFabric.Utils.Ipc.Http
             var body = new
             {
                 code = _statusCode,
-                message = _message
+                message = _message,
+                additional_info = _additionalInfo
             };
 
             var formattedContentResult =
