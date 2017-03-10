@@ -1,35 +1,47 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Results;
 using Newtonsoft.Json;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
-    public abstract class HttpApiResponseMessage : HttpResponseMessage, IApiResponseMessage<HttpStatusCode>
+    public abstract class HttpApiResponseMessage : IHttpActionResult
     {
-        protected HttpApiResponseMessage(HttpStatusCode statusCode, object message, object additionalInfo)
-            : base(statusCode)
+        private readonly HttpRequestMessage _requestMessage;
+        private readonly HttpStatusCode _statusCode;
+        private readonly object _message;
+
+        protected HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode, object message)
         {
-            Code = statusCode;
-            Message = message;
-            AdditionalInfo = additionalInfo;
-
-            base.Content =
-                new StringContent(JsonConvert.SerializeObject(new
-                {
-                    code = Code,
-                    message = Message,
-                    additional_info = AdditionalInfo
-                }));
-
-            base.Content.Headers.ContentType =
-                new MediaTypeHeaderValue("application/json");
+            _requestMessage = request;
+            _statusCode = statusCode;
+            _message = message;
         }
 
-        public HttpStatusCode Code { get; }
+        public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            var body = new
+            {
+                code = _statusCode,
+                message = _message
+            };
 
-        public object Message { get; }
+            var formattedContentResult =
+                new FormattedContentResult<object>(
+                    _statusCode,
+                    body,
+                    new JsonMediaTypeFormatter(),
+                    new MediaTypeHeaderValue("application/json"),
+                    _requestMessage);
 
-        public object AdditionalInfo { get; }
+            HttpResponseMessage response = await formattedContentResult.ExecuteAsync(cancellationToken);
+
+            return response;
+        }
     }
 }
