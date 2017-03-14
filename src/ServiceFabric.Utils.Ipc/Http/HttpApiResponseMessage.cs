@@ -52,5 +52,4 @@ namespace ServiceFabric.Utils.Ipc.Http
         public object Message => _message;
         public object Info => _info;
     }
-    }
 }
