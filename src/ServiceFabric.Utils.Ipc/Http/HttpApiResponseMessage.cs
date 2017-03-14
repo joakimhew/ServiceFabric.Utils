@@ -13,31 +13,31 @@ namespace ServiceFabric.Utils.Ipc.Http
     public class HttpApiResponseMessage : IHttpActionResult
     {
         private readonly HttpRequestMessage _requestMessage;
-        private readonly HttpStatusCode _statusCode;
+        private readonly HttpStatusCode _code;
         private readonly object _message;
-        private readonly object _additionalInfo;
+        private readonly object _info;
 
-        public HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode, 
+        public HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode,
             object message, object additionalInfo = null)
         {
             _requestMessage = request;
-            _statusCode = statusCode;
+            _code = statusCode;
             _message = message;
-            _additionalInfo = additionalInfo;
+            _info = additionalInfo;
         }
 
         public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
             var body = new
             {
-                code = _statusCode,
+                code = _code,
                 message = _message,
-                additional_info = _additionalInfo
+                info = _info
             };
 
             var formattedContentResult =
                 new FormattedContentResult<object>(
-                    _statusCode,
+                    _code,
                     body,
                     new JsonMediaTypeFormatter(),
                     new MediaTypeHeaderValue("application/json"),
@@ -47,5 +47,10 @@ namespace ServiceFabric.Utils.Ipc.Http
 
             return response;
         }
+
+        public HttpStatusCode Code => _code;
+        public object Message => _message;
+        public object Info => _info;
+    }
     }
 }
