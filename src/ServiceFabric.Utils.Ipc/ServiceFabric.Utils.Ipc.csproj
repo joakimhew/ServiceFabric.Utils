@@ -77,10 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Http\ApiResponseMessage.cs" />
     <Compile Include="Http\HttpApiResponseMessage.cs" />
     <Compile Include="Helpers\ServiceFabricUriBuilder.cs" />
     <Compile Include="Http\HttpCommunicationClient.cs" />
     <Compile Include="Http\HttpCommunicationClientFactory.cs" />
+    <Compile Include="Http\HttpContentExtensions.cs" />
     <Compile Include="Http\HttpExceptionHandler.cs" />
     <Compile Include="IApiResponseMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
