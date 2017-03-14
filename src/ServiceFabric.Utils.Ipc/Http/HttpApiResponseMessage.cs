@@ -6,18 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-using Newtonsoft.Json;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
-    public class HttpApiResponseMessage : IHttpActionResult
+    public class ApiResponseMessageResult : IHttpActionResult
     {
         private readonly HttpRequestMessage _requestMessage;
         private readonly HttpStatusCode _code;
         private readonly object _message;
         private readonly object _info;
 
-        public HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode,
+        public ApiResponseMessageResult(HttpRequestMessage request, HttpStatusCode statusCode,
             object message, object additionalInfo = null)
         {
             _requestMessage = request;
@@ -47,9 +46,5 @@ namespace ServiceFabric.Utils.Ipc.Http
 
             return response;
         }
-
-        public HttpStatusCode Code => _code;
-        public object Message => _message;
-        public object Info => _info;
     }
 }
