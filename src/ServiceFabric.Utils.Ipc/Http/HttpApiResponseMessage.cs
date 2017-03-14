@@ -9,14 +9,14 @@ using System.Web.Http.Results;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
-    public class ApiResponseMessageResult : IHttpActionResult
+    public class HttpApiResponseMessage : IHttpActionResult
     {
         private readonly HttpRequestMessage _requestMessage;
         private readonly HttpStatusCode _code;
         private readonly object _message;
         private readonly object _info;
 
-        public ApiResponseMessageResult(HttpRequestMessage request, HttpStatusCode statusCode,
+        public HttpApiResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode,
             object message, object additionalInfo = null)
         {
             _requestMessage = request;
