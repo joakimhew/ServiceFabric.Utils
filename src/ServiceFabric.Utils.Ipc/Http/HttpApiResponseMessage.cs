@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
@@ -38,7 +40,13 @@ namespace ServiceFabric.Utils.Ipc.Http
                 new FormattedContentResult<object>(
                     _code,
                     body,
-                    new JsonMediaTypeFormatter(),
+                    new JsonMediaTypeFormatter
+                    {
+                        SerializerSettings = new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }
+                    },
                     new MediaTypeHeaderValue("application/json"),
                     _requestMessage);
 

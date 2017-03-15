@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
-    public class ApiResponseMessage<TMessage>
+    public class ApiResponseMessage<TMessageType>
     {
         [JsonProperty("code")]
         public HttpStatusCode Code { get; set; }
 
         [JsonProperty("message")]
-        public TMessage Message { get; set; }
+        public TMessageType Message { get; set; }
 
         [JsonProperty("info")]
         public string Info { get; set; }
