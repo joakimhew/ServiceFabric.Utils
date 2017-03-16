@@ -1,0 +1,52 @@
+﻿using System.Data;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using Dapper;
+
+namespace ServiceFabric.Utils.Ipc.Http
+{
+    public class SqlErrorStore : IErrorStore
+    {
+        private readonly IDbConnection _dbConnection;
+
+        public SqlErrorStore(string connectionString)
+        {
+            _dbConnection = new SqlConnection(connectionString);
+        }
+
+        public async Task<int> AddAsync(Error error)
+        {
+            _dbConnection.Open();
+
+            var result = await _dbConnection.ExecuteAsync(
+                "INSERT INTO [dbo].[Error] (Id, ApplicationName, MachineName, " +
+                "Created, Type, Host, Url, HttpMethod, IpAddress, Source, " +
+                "Message, Detail, Sql, ErrorHash, FullJson) " +
+                "VALUES (@Id, @ApplicationName, @MachineName, @Created, @Type, " +
+                "@Host, @Url, @HttpMethod, @IpAddress, @Source, @Message, @Detail, " +
+                "@Sql, @ErrorHash, @FullJson)",
+                new
+                {
+                    error.Id,
+                    error.ApplicationName,
+                    error.MachineName,
+                    error.Created,
+                    error.Type,
+                    error.Host,
+                    error.Url,
+                    error.HttpMethod,
+                    error.IpAddress,
+                    error.Source,
+                    error.Message,
+                    error.Detail,
+                    error.Sql,
+                    error.ErrorHash,
+                    error.FullJson
+                });
+
+            _dbConnection.Close();
+
+            return result;
+        }
+    }
+}

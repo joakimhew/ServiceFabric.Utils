@@ -20,33 +20,30 @@ namespace ServiceFabric.Utils.Ipc.Http
             _context = context;
 
             Id = Guid.NewGuid();
-            CreationDate = DateTime.Now;
+            Created = DateTime.Now;
         }
 
         public Guid Id { get; set; }
         public string ApplicationName { get; set; }
         public string MachineName { get; set; }
-        public DateTime CreationDate { get; set; }
+        public DateTime Created { get; set; }
         public string Type { get; set; }
-        public bool IsProtected { get; set; }
         public string Host { get; set; }
-        public Uri Url { get; set; }
+        public string Url { get; set; }
         public string HttpMethod { get; set; }
         public string IpAddress { get; set; }
         public string Source { get; set; }
         public string Message { get; set; }
         public string Detail { get; set; }
         public string Sql { get; set; }
-        public DateTime DeletionDate { get; set; }
         public int? ErrorHash { get; set; }
-        public int DuplicateCount { get; set; }
-        public bool RollupPerServer { get; set; }
         public string ServerVariables { get; set; }
         public QueryString QueryString { get; set; }
         public IFormCollection Form { get; set; }
         public RequestCookieCollection Cookies { get; set; }
         public IHeaderDictionary RequestHeaders { get; set; }
 
+        [JsonIgnore]
         public string FullJson
         {
             get
@@ -177,7 +174,7 @@ namespace ServiceFabric.Utils.Ipc.Http
         /// <returns>Current instance of error with request Uri</returns>
         public Error WithUrl()
         {
-            Url = _context.Request.Uri;
+            Url = _context.Request.Uri.ToString();
             return this;
         }
 
@@ -326,7 +323,7 @@ namespace ServiceFabric.Utils.Ipc.Http
             }
 
             var result = Detail.GetHashCode();
-            if (RollupPerServer && !string.IsNullOrEmpty(MachineName))
+            if (!string.IsNullOrEmpty(MachineName))
             {
                 result = (result * 397) ^ MachineName.GetHashCode();
             }
