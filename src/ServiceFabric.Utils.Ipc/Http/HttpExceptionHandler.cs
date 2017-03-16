@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -12,21 +13,32 @@ namespace ServiceFabric.Utils.Ipc.Http
     public class HttpExceptionHandler : ExceptionHandler, IExceptionHandler
     {
         private readonly string _applicationName;
+        private readonly string _applicationVersion;
         private readonly IErrorStore _errorStore;
 
         public HttpExceptionHandler()
         {
         }
 
-        public HttpExceptionHandler(string applicationName)
+        public HttpExceptionHandler(IErrorStore errorStore, Assembly callingAssembly)
         {
-            _applicationName = applicationName;
+            _errorStore = errorStore;
+            _applicationName = callingAssembly.GetName().Name;
+
+            if (callingAssembly.Location == null)
+            {
+                return;
+            }
+
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(callingAssembly.Location);
+            _applicationVersion = fileVersionInfo.FileVersion;
         }
 
-        public HttpExceptionHandler(IErrorStore errorStore, string applicationName)
+        public HttpExceptionHandler(IErrorStore errorStore, string applicationName = null, string applicationVersion = null)
         {
             _errorStore = errorStore;
             _applicationName = applicationName;
+            _applicationVersion = applicationVersion;
         }
 
         public bool TryHandleException(ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,
@@ -120,6 +132,7 @@ namespace ServiceFabric.Utils.Ipc.Http
         {
             var error = new Error(context.Exception, context.Request.GetOwinContext())
                 .WithApplicationName(_applicationName)
+                .WithApplicationVersion(_applicationVersion)
                 .WithMachineName()
                 .WithAllContextProperties()
                 .WithAllExceptionProperties();

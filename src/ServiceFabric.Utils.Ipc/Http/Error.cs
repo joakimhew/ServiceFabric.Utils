@@ -25,6 +25,7 @@ namespace ServiceFabric.Utils.Ipc.Http
 
         public Guid Id { get; set; }
         public string ApplicationName { get; set; }
+        public string ApplicationVersion { get; set; }
         public string MachineName { get; set; }
         public DateTime Created { get; set; }
         public string Type { get; set; }
@@ -71,6 +72,29 @@ namespace ServiceFabric.Utils.Ipc.Http
             }
 
             ApplicationName = applicationName;
+            return this;
+        }
+        
+        /// <summary>
+        /// Include application version with error
+        /// </summary>
+        /// <param name="applicationVersion">Optional custom application version. Defaults to FileVersion of assembly</param>
+        /// <returns>Current instance of error with application name</returns>
+        public Error WithApplicationVersion(string applicationVersion = null)
+        {
+            if (string.IsNullOrEmpty(applicationVersion))
+            {
+                var assemblyLocation = Assembly.GetCallingAssembly().Location;
+                if (assemblyLocation != null)
+                {
+                    var fileVersionInfo = FileVersionInfo.GetVersionInfo(assemblyLocation);
+                    ApplicationVersion = fileVersionInfo.FileVersion;
+                }
+
+                return this;
+            }
+
+            ApplicationVersion = applicationVersion;
             return this;
         }
 
