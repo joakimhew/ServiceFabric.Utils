@@ -11,15 +11,22 @@ namespace ServiceFabric.Utils.Ipc.Http
 {
     public class HttpExceptionHandler : ExceptionHandler, IExceptionHandler
     {
+        private readonly string _applicationName;
         private readonly IErrorStore _errorStore;
 
         public HttpExceptionHandler()
         {
         }
 
-        public HttpExceptionHandler(IErrorStore errorStore)
+        public HttpExceptionHandler(string applicationName)
+        {
+            _applicationName = applicationName;
+        }
+
+        public HttpExceptionHandler(IErrorStore errorStore, string applicationName)
         {
             _errorStore = errorStore;
+            _applicationName = applicationName;
         }
 
         public bool TryHandleException(ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,
@@ -112,7 +119,7 @@ namespace ServiceFabric.Utils.Ipc.Http
         public override void Handle(ExceptionHandlerContext context)
         {
             var error = new Error(context.Exception, context.Request.GetOwinContext())
-                .WithApplicationName(Assembly.GetCallingAssembly().GetName().Name)
+                .WithApplicationName(_applicationName)
                 .WithMachineName()
                 .WithAllContextProperties()
                 .WithAllExceptionProperties();
