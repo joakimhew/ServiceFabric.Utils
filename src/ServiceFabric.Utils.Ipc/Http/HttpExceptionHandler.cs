@@ -1,12 +1,27 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Reflection;
+using System.Web.Http.ExceptionHandling;
 using Microsoft.ServiceFabric.Services.Communication.Client;
+using IExceptionHandler = Microsoft.ServiceFabric.Services.Communication.Client.IExceptionHandler;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
-    public class HttpExceptionHandler : IExceptionHandler
+    public class HttpExceptionHandler : ExceptionHandler, IExceptionHandler
     {
+        private readonly IErrorStore _errorStore;
+
+        public HttpExceptionHandler()
+        {
+        }
+
+        public HttpExceptionHandler(IErrorStore errorStore)
+        {
+            _errorStore = errorStore;
+        }
+
         public bool TryHandleException(ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,
             out ExceptionHandlingResult result)
         {
@@ -92,6 +107,23 @@ namespace ServiceFabric.Utils.Ipc.Http
 
             result = null;
             return false;
+        }
+
+        public override void Handle(ExceptionHandlerContext context)
+        {
+            var error = new Error(context.Exception, context.Request.GetOwinContext())
+                .WithApplicationName(Assembly.GetCallingAssembly().GetName().Name)
+                .WithMachineName()
+                .WithAllContextProperties()
+                .WithAllExceptionProperties();
+
+            _errorStore.AddAsync(error);
+
+            context.Result = new HttpApiResponseMessage(
+                context.Request,
+                HttpStatusCode.InternalServerError,
+                "And error has occured. Please contact the administrators",
+                error.Id);
         }
     }
 }
