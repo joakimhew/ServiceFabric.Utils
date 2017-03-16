@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Owin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
@@ -36,7 +38,6 @@ namespace ServiceFabric.Utils.Ipc.Http
         public string Detail { get; set; }
         public string Sql { get; set; }
         public DateTime DeletionDate { get; set; }
-        public string FullJson { get; set; }
         public int? ErrorHash { get; set; }
         public int DuplicateCount { get; set; }
         public bool RollupPerServer { get; set; }
@@ -45,6 +46,19 @@ namespace ServiceFabric.Utils.Ipc.Http
         public IFormCollection Form { get; set; }
         public RequestCookieCollection Cookies { get; set; }
         public IHeaderDictionary RequestHeaders { get; set; }
+
+        public string FullJson
+        {
+            get
+            {
+                var json = JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
+                return json;
+            }
+        }
 
         /// <summary>
         /// Include application name with error
