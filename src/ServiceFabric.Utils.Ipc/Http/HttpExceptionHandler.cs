@@ -139,7 +139,7 @@ namespace ServiceFabric.Utils.Ipc.Http
 
             _errorStore.AddAsync(error);
 
-            context.Result = new HttpApiResponseMessage(
+            context.Result = new ApiHttpActionResult(
                 context.Request,
                 HttpStatusCode.InternalServerError,
                 "And error has occured. Please contact the administrators",

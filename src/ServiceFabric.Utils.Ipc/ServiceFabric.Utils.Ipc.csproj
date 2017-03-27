@@ -97,6 +97,7 @@
     <Compile Include="Http\HttpCommunicationClientFactory.cs" />
     <Compile Include="Http\HttpContentExtensions.cs" />
     <Compile Include="Http\HttpExceptionHandler.cs" />
+    <Compile Include="Http\HttpRequestApiMessageExtensions.cs" />
     <Compile Include="Http\IErrorStore.cs" />
     <Compile Include="Http\SqlErrorStore.cs" />
     <Compile Include="IApiResponseMessage.cs" />
