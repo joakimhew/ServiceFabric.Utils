@@ -30,7 +30,9 @@ namespace ServiceFabric.Utils.Ipc.Http
 
         private async Task<HttpResponseMessage> DefaultResponseMessageHandler(IOwinContext context, HttpResponseMessage response)
         {
-            if (!response.TryGetContentValue(out HttpError httpError))
+            HttpError httpError;
+
+            if (!response.TryGetContentValue(out httpError))
                 return response;
 
             Guid errorId;
