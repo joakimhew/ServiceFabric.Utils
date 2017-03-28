@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Http\ApiException.cs" />
     <Compile Include="Http\ApiHttpDelegatingHandler.cs" />
+    <Compile Include="Http\ApiHttpExceptionHandler.cs" />
     <Compile Include="Http\ApiResponseMessage.cs" />
     <Compile Include="Http\Error.cs" />
     <Compile Include="Http\ApiHttpActionResult.cs" />

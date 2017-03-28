@@ -12,35 +12,6 @@ namespace ServiceFabric.Utils.Ipc.Http
 {
     public class HttpExceptionHandler : ExceptionHandler, IExceptionHandler
     {
-        private readonly string _applicationName;
-        private readonly string _applicationVersion;
-        private readonly IErrorStore _errorStore;
-
-        public HttpExceptionHandler()
-        {
-        }
-
-        public HttpExceptionHandler(IErrorStore errorStore, Assembly callingAssembly)
-        {
-            _errorStore = errorStore;
-            _applicationName = callingAssembly.GetName().Name;
-
-            if (callingAssembly.Location == null)
-            {
-                return;
-            }
-
-            var fileVersionInfo = FileVersionInfo.GetVersionInfo(callingAssembly.Location);
-            _applicationVersion = fileVersionInfo.FileVersion;
-        }
-
-        public HttpExceptionHandler(IErrorStore errorStore, string applicationName = null, string applicationVersion = null)
-        {
-            _errorStore = errorStore;
-            _applicationName = applicationName;
-            _applicationVersion = applicationVersion;
-        }
-
         public bool TryHandleException(ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,
             out ExceptionHandlingResult result)
         {
