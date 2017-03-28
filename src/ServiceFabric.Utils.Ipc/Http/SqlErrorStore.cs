@@ -20,10 +20,10 @@ namespace ServiceFabric.Utils.Ipc.Http
 
             var result = await _dbConnection.ExecuteAsync(
                 "INSERT INTO [dbo].[Error] (Id, ApplicationName, ApplicationVersion, MachineName, " +
-                "Created, Type, Host, Url, HttpMethod, IpAddress, Source, " +
+                "Created, Type, Host, Url, HttpMethod, HttpStatusCode, IpAddress, Source, " +
                 "Message, Detail, Sql, ErrorHash, FullJson) " +
                 "VALUES (@Id, @ApplicationName, @ApplicationVersion, @MachineName, @Created, @Type, " +
-                "@Host, @Url, @HttpMethod, @IpAddress, @Source, @Message, @Detail, " +
+                "@Host, @Url, @HttpMethod, @HttpStatusCode, @IpAddress, @Source, @Message, @Detail, " +
                 "@Sql, @ErrorHash, @FullJson)",
                 new
                 {
@@ -36,6 +36,7 @@ namespace ServiceFabric.Utils.Ipc.Http
                     error.Host,
                     error.Url,
                     error.HttpMethod,
+                    error.HttpStatusCode,
                     error.IpAddress,
                     error.Source,
                     error.Message,

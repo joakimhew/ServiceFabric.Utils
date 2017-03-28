@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using Microsoft.Owin;
 using Newtonsoft.Json;
@@ -32,6 +33,7 @@ namespace ServiceFabric.Utils.Ipc.Http
         public string Host { get; set; }
         public string Url { get; set; }
         public string HttpMethod { get; set; }
+        public int HttpStatusCode { get; set; }
         public string IpAddress { get; set; }
         public string Source { get; set; }
         public string Message { get; set; }
@@ -119,9 +121,15 @@ namespace ServiceFabric.Utils.Ipc.Http
         /// This is included in <see cref="WithAllExceptionProperties"/>
         /// </summary>
         /// <returns>Instance of Error with type exception</returns>
-        public Error WithType()
+        public Error WithType(string type = null)
         {
-            Type = _ex.GetType().Name;
+            if (type == null)
+            {
+                Type = _ex.GetType().Name;
+                return this;
+            }
+
+            Type = type;
             return this;
         }
 
@@ -209,6 +217,21 @@ namespace ServiceFabric.Utils.Ipc.Http
         public Error WithHttpMethod()
         {
             HttpMethod = _context.Request.Method;
+            return this;
+        }
+
+        /// <summary>
+        /// This is inclided in <see cref="WithAllContextProperties"/>
+        /// </summary>
+        /// <returns>Current instance of error with response StatusCode</returns>
+        public Error WithHttpStatusCode(int statusCode = 0)
+        {
+            if (statusCode == 0)
+            {
+                HttpStatusCode = _context.Response.StatusCode;
+                return this;
+            }
+            HttpStatusCode = statusCode;
             return this;
         }
 
@@ -318,6 +341,7 @@ namespace ServiceFabric.Utils.Ipc.Http
             WithHost();
             WithUrl();
             WithHttpMethod();
+            WithHttpStatusCode();
             WithIpAddress();
             WithQueryString();
             WithForm();

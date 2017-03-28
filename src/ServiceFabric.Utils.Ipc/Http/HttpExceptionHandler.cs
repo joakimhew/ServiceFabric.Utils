@@ -127,23 +127,5 @@ namespace ServiceFabric.Utils.Ipc.Http
             result = null;
             return false;
         }
-
-        public override void Handle(ExceptionHandlerContext context)
-        {
-            var error = new Error(context.Exception, context.Request.GetOwinContext())
-                .WithApplicationName(_applicationName)
-                .WithApplicationVersion(_applicationVersion)
-                .WithMachineName()
-                .WithAllContextProperties()
-                .WithAllExceptionProperties();
-
-            _errorStore.AddAsync(error);
-
-            context.Result = new ApiHttpActionResult(
-                context.Request,
-                HttpStatusCode.InternalServerError,
-                "And error has occured. Please contact the administrators",
-                error.Id);
-        }
     }
 }

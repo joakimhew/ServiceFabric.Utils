@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -89,15 +91,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Http\ApiException.cs" />
+    <Compile Include="Http\ApiHttpDelegatingHandler.cs" />
     <Compile Include="Http\ApiResponseMessage.cs" />
     <Compile Include="Http\Error.cs" />
-    <Compile Include="Http\HttpApiResponseMessage.cs" />
+    <Compile Include="Http\ApiHttpActionResult.cs" />
     <Compile Include="Helpers\ServiceFabricUriBuilder.cs" />
+    <Compile Include="Http\ApiHttpResponseMessage.cs" />
+    <Compile Include="Http\ErrorHandler.cs" />
     <Compile Include="Http\HttpCommunicationClient.cs" />
     <Compile Include="Http\HttpCommunicationClientFactory.cs" />
     <Compile Include="Http\HttpContentExtensions.cs" />
     <Compile Include="Http\HttpExceptionHandler.cs" />
-    <Compile Include="Http\HttpRequestApiMessageExtensions.cs" />
+    <Compile Include="Http\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Http\IErrorHandler.cs" />
     <Compile Include="Http\IErrorStore.cs" />
     <Compile Include="Http\SqlErrorStore.cs" />
     <Compile Include="IApiResponseMessage.cs" />

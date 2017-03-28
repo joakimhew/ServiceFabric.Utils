@@ -6,10 +6,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace ServiceFabric.Utils.Ipc.Http
 {
-    public static class HttpRequestApiMessageExtensions
+    public class ApiHttpResponseMessage : HttpResponseMessage
     {
-        public static HttpResponseMessage CreateApiResponse(this HttpRequestMessage request,
-            HttpStatusCode statusCode, object message, object additionalInfo = null)
+        public ApiHttpResponseMessage(HttpStatusCode statusCode, object message, object additionalInfo = null)
         {
             var body = new
             {
@@ -18,13 +17,15 @@ namespace ServiceFabric.Utils.Ipc.Http
                 info = additionalInfo
             };
 
-            return request.CreateResponse(statusCode, body, new JsonMediaTypeFormatter
+            base.Content = new ObjectContent<object>(body, new JsonMediaTypeFormatter
             {
                 SerializerSettings = new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 }
             });
+
+            base.StatusCode = statusCode;
         }
     }
 }
