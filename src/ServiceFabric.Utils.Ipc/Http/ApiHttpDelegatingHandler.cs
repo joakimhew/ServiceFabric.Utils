@@ -39,18 +39,18 @@ namespace ServiceFabric.Utils.Ipc.Http
 
             switch (response.StatusCode)
             {
-                case HttpStatusCode.BadRequest:
+                case HttpStatusCode.InternalServerError:
                     errorId = await _errorHandler.LogErrorAsync(context, response.StatusCode, httpError);
                     return new ApiHttpResponseMessage(
                         response.StatusCode,
-                        "bad request",
+                        "Internal server error",
                         errorId == Guid.Empty ? null : errorId.ToString());
 
                 default:
                     errorId = await _errorHandler.LogErrorAsync(context, response.StatusCode, httpError);
                     return new ApiHttpResponseMessage(
                         response.StatusCode,
-                        "an error has occured",
+                        httpError.Message,
                         errorId == Guid.Empty ? null : errorId.ToString());
             }
         }
