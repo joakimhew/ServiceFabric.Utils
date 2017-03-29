@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -15,13 +16,20 @@ namespace ServiceFabric.Utils.Ipc.Http
         private readonly Exception _ex;
         private readonly IOwinContext _context;
 
+        public Error(IOwinContext context)
+        {
+            _context = context;
+            Id = Guid.NewGuid();
+            Created = DateTime.UtcNow;
+        }
+
         public Error(Exception ex, IOwinContext context)
         {
             _ex = ex;
             _context = context;
 
             Id = Guid.NewGuid();
-            Created = DateTime.Now;
+            Created = DateTime.UtcNow;
         }
 
         public Guid Id { get; set; }

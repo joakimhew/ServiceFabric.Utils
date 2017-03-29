@@ -86,25 +86,22 @@ namespace ServiceFabric.Utils.Ipc.Http
             HttpStatusCode statusCode,
             HttpError httpError)
         {
-            var exception = new ApiException(httpError.MessageDetail, httpError.StackTrace);
-
-            var error = new Error(exception, context)
+            var error = new Error(context)
                 .WithApplicationName(applicationName)
                 .WithApplicationVersion(applicationVersion)
                 .WithMachineName()
                 .WithHost()
                 .WithUrl()
                 .WithHttpMethod()
-                .WithHttpStatusCode((int)statusCode)
+                .WithHttpStatusCode((int) statusCode)
                 .WithIpAddress()
                 .WithQueryString()
                 .WithForm()
                 .WithCookies()
                 .WithRequestHeaders()
-                .WithType(httpError.ExceptionType)
-                .WithMessage(exception.Message)
-                .WithDetail(exception.StackTrace)
-                .WithSource()
+                .WithType(Enum.GetName(typeof(HttpStatusCode), statusCode))
+                .WithMessage(httpError.Message)
+                .WithDetail(httpError.MessageDetail)
                 .WithFullStackTrace();
 
             var result = await _errorStore.AddAsync(error);
