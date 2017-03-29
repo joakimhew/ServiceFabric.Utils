@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -68,23 +70,28 @@ namespace ServiceFabric.Utils.Ipc.Http
             }
             else
             {
-                WriteAllProperties();
-                WriteAllKeys();
+                Debug.WriteLine($"--- {header} PROPERTIES ---");
+                WriteAllHttpProperties(httpError);
+
+                Debug.WriteLine($"--- {header} KEYS ---");
+                WriteAllHttpErrorKeys(httpError.ToList());
             }
 
             Debug.WriteLine($"------ end {header} end -------{Environment.NewLine}");
+        }
 
-            void WriteAllProperties()
-            {
-                Debug.WriteLine($"Message: {httpError.Message}");
-                Debug.WriteLine($"Message details: {httpError.MessageDetail}");
-                Debug.WriteLine($"Exception message: {httpError.ExceptionMessage}");
-                Debug.WriteLine($"Exception type: {httpError.ExceptionType}");
-                Debug.WriteLine($"StackTrace: {httpError.StackTrace}");
-                Debug.WriteLine($"{Environment.NewLine}--- {header} KEYS ---");
-            }
+        private void WriteAllHttpProperties(HttpError httpError)
+        {
+            Debug.WriteLine($"Message: {httpError.Message}");
+            Debug.WriteLine($"Message details: {httpError.MessageDetail}");
+            Debug.WriteLine($"Exception message: {httpError.ExceptionMessage}");
+            Debug.WriteLine($"Exception type: {httpError.ExceptionType}");
+            Debug.WriteLine($"StackTrace: {httpError.StackTrace}");
+        }
 
-            void WriteAllKeys() => httpError.ToList().ForEach(x => { Debug.WriteLine($"KEY: {x.Key} VALUE: {x.Value}"); });
+        private void WriteAllHttpErrorKeys(List<KeyValuePair<string, object>> keys)
+        {
+           keys.ForEach(x => { Debug.WriteLine($"KEY: {x.Key} | VALUE: {x.Value}");});
         }
 
         public event Func<IOwinContext, HttpResponseMessage, HttpResponseMessage> ResponseMessageHandler;
