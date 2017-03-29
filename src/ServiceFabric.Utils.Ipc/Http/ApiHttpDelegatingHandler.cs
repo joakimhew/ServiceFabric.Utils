@@ -30,6 +30,9 @@ namespace ServiceFabric.Utils.Ipc.Http
 
         private async Task<HttpResponseMessage> DefaultResponseMessageHandler(IOwinContext context, HttpResponseMessage response)
         {
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                return response;
+
             HttpError httpError;
 
             if (!response.TryGetContentValue(out httpError))

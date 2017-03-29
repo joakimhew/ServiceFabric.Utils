@@ -100,8 +100,14 @@ namespace ServiceFabric.Utils.Ipc.Http
                 .WithCookies()
                 .WithRequestHeaders()
                 .WithType(Enum.GetName(typeof(HttpStatusCode), statusCode))
-                .WithMessage(httpError.Message)
-                .WithDetail(httpError.MessageDetail)
+                .WithMessage(
+                    string.IsNullOrEmpty(httpError.Message) 
+                    ? "Failed to parse httpError.Message" 
+                    : httpError.Message)
+                .WithDetail(
+                    string.IsNullOrEmpty(httpError.MessageDetail) 
+                    ? $"Failed to parse httpError.MessageDetail. Inner exception: {httpError.InnerException}" 
+                    : httpError.MessageDetail)
                 .WithFullStackTrace();
 
             var result = await _errorStore.AddAsync(error);
