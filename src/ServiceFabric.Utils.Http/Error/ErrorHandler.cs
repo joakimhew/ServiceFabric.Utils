@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Owin;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http.Error
 {
     public class ErrorHandler : IErrorHandler
     {

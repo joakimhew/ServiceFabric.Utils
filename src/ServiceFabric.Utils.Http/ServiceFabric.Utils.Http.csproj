@@ -7,8 +7,8 @@
     <ProjectGuid>{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServiceFabric.Utils.Ipc</RootNamespace>
-    <AssemblyName>ServiceFabric.Utils.Ipc</AssemblyName>
+    <RootNamespace>ServiceFabric.Utils.Http</RootNamespace>
+    <AssemblyName>ServiceFabric.Utils.Http</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -91,24 +91,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Http\ApiException.cs" />
-    <Compile Include="Http\ApiHttpDelegatingHandler.cs" />
-    <Compile Include="Http\ApiHttpExceptionHandler.cs" />
-    <Compile Include="Http\ApiResponseMessage.cs" />
-    <Compile Include="Http\Error.cs" />
-    <Compile Include="Http\ApiHttpActionResult.cs" />
-    <Compile Include="Helpers\ServiceFabricUriBuilder.cs" />
-    <Compile Include="Http\ApiHttpResponseMessage.cs" />
-    <Compile Include="Http\ErrorHandler.cs" />
-    <Compile Include="Http\HttpCommunicationClient.cs" />
-    <Compile Include="Http\HttpCommunicationClientFactory.cs" />
-    <Compile Include="Http\HttpContentExtensions.cs" />
-    <Compile Include="Http\HttpExceptionHandler.cs" />
-    <Compile Include="Http\HttpRequestMessageExtensions.cs" />
-    <Compile Include="Http\IErrorHandler.cs" />
-    <Compile Include="Http\IErrorStore.cs" />
-    <Compile Include="Http\SqlErrorStore.cs" />
+    <Compile Include="ApiException.cs" />
+    <Compile Include="DelegatingHandlers\ApiHttpDelegatingHandler.cs" />
+    <Compile Include="ApiHttpExceptionHandler.cs" />
+    <Compile Include="ApiResponseMessage.cs" />
+    <Compile Include="Error\Error.cs" />
+    <Compile Include="ApiHttpActionResult.cs" />
+    <Compile Include="ApiHttpResponseMessage.cs" />
+    <Compile Include="Error\ErrorHandler.cs" />
+    <Compile Include="HttpCommunicationClient.cs" />
+    <Compile Include="HttpCommunicationClientFactory.cs" />
+    <Compile Include="Extensions\HttpContentExtensions.cs" />
+    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Error\IErrorHandler.cs" />
+    <Compile Include="Error\IErrorStore.cs" />
+    <Compile Include="Error\SqlErrorStore.cs" />
     <Compile Include="IApiResponseMessage.cs" />
+    <Compile Include="Middlewares\GZipMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

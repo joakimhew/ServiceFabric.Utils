@@ -1,27 +1,58 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
-using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http.ExceptionHandling;
 using Microsoft.ServiceFabric.Services.Communication.Client;
+using ServiceFabric.Utils.Http.Error;
 using IExceptionHandler = Microsoft.ServiceFabric.Services.Communication.Client.IExceptionHandler;
 
-namespace ServiceFabric.Utils.Ipc.Http
+
+namespace ServiceFabric.Utils.Http
 {
-    public class HttpExceptionHandler : ExceptionHandler, IExceptionHandler
+    public class ApiHttpExceptionHandler : ExceptionHandler, IExceptionHandler
     {
+        private readonly IErrorHandler _errorHandler;
+
+        public ApiHttpExceptionHandler()
+        {
+            
+        }
+
+        public ApiHttpExceptionHandler(IErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+        }
+
+        public override async Task HandleAsync(ExceptionHandlerContext context, CancellationToken cancellationToken)
+        {
+            var owinContext = context.Request.GetOwinContext();
+            var errorId = await _errorHandler.LogErrorAsync(owinContext, HttpStatusCode.InternalServerError, context.Exception);
+
+            context.Result = new ApiHttpActionResult(
+                context.Request,
+                HttpStatusCode.InternalServerError,
+                "Internal server error",
+                errorId == Guid.Empty ? null : errorId.ToString());
+        }
+
+        public override bool ShouldHandle(ExceptionHandlerContext context)
+        {
+            return true;
+        }
+
         public bool TryHandleException(ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,
             out ExceptionHandlingResult result)
         {
             if (exceptionInformation.Exception is TimeoutException)
             {
-                result = 
+                result =
                     new ExceptionHandlingRetryResult(
-                        exceptionInformation.Exception, 
-                        false, 
-                        retrySettings, 
+                        exceptionInformation.Exception,
+                        false,
+                        retrySettings,
                         retrySettings.DefaultMaxRetryCount);
 
                 return true;
@@ -56,7 +87,7 @@ namespace ServiceFabric.Utils.Ipc.Http
                 {
                     if (errorResponse != null && errorResponse.StatusCode == HttpStatusCode.NotFound)
                     {
-                        result = 
+                        result =
                             new ExceptionHandlingRetryResult(
                                 exceptionInformation.Exception,
                                 false,
@@ -68,7 +99,7 @@ namespace ServiceFabric.Utils.Ipc.Http
 
                     if (errorResponse != null && errorResponse.StatusCode == HttpStatusCode.InternalServerError)
                     {
-                        result = 
+                        result =
                             new ExceptionHandlingRetryResult(
                                 exceptionInformation.Exception,
                                 true,
@@ -84,7 +115,7 @@ namespace ServiceFabric.Utils.Ipc.Http
                     we.Status == WebExceptionStatus.ConnectionClosed ||
                     we.Status == WebExceptionStatus.ConnectFailure)
                 {
-                    result = 
+                    result =
                         new ExceptionHandlingRetryResult(
                             exceptionInformation.Exception,
                             false,

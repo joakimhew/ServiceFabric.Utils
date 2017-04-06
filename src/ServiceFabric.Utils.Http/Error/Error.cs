@@ -1,14 +1,12 @@
 ﻿using System;
-using System.CodeDom;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using Microsoft.Owin;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http.Error
 {
     public class Error
     {

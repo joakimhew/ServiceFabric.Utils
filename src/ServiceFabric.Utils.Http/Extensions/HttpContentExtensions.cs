@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http.Extensions
 {
     public static class HttpContentExtensions
     {

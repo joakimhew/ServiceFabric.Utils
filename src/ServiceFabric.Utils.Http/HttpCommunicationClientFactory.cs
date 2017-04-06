@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http
 {
     public class HttpCommunicationClientFactory : CommunicationClientFactoryBase<HttpCommunicationClient>
     {
@@ -40,7 +40,7 @@ namespace ServiceFabric.Utils.Ipc.Http
             IEnumerable<IExceptionHandler> additionalExceptionHandlers)
         {
             return
-                new[] { new HttpExceptionHandler() }.Union(additionalExceptionHandlers ??
+                new[] { new ApiHttpExceptionHandler() }.Union(additionalExceptionHandlers ??
                                                            Enumerable.Empty<IExceptionHandler>());
         }
     }

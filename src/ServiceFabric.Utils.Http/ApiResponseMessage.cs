@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http
 {
     public class ApiResponseMessage<TMessageType>
     {

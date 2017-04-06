@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http.Extensions
 {
     public static class HttpRequestMessageExtensions
     {

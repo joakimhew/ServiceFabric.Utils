@@ -3,7 +3,7 @@ using System.Fabric;
 using System.Net.Http;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http
 {
     /// <summary>
     /// Used for IPC between services within the service fabric cluster(s)

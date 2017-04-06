@@ -4,7 +4,7 @@ using System.Net.Http.Formatting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http
 {
     public class ApiHttpResponseMessage : HttpResponseMessage
     {

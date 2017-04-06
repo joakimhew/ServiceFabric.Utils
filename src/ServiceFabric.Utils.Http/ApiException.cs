@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http
 {
     public class ApiException : Exception
     {

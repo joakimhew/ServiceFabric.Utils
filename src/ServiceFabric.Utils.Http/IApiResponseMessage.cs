@@ -1,4 +1,4 @@
-﻿namespace ServiceFabric.Utils.Ipc
+﻿namespace ServiceFabric.Utils
 {
     public interface IApiResponseMessage<out TCode>
     {

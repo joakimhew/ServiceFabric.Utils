@@ -1,15 +1,12 @@
 ﻿using System.Net;
-using System.Net.Cache;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-using System.Web.Http.Validation;
+using ServiceFabric.Utils.Http.Extensions;
 
-namespace ServiceFabric.Utils.Ipc.Http
+namespace ServiceFabric.Utils.Http
 {
     public class ApiHttpActionResult : IHttpActionResult
     {
