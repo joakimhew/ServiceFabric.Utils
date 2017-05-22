@@ -15,6 +15,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -104,7 +105,6 @@
     <Compile Include="Error\IErrorHandler.cs" />
     <Compile Include="Error\IErrorStore.cs" />
     <Compile Include="Error\SqlErrorStore.cs" />
-    <Compile Include="IApiResponseMessage.cs" />
     <Compile Include="Middlewares\GZipMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationActionResult.cs" />
