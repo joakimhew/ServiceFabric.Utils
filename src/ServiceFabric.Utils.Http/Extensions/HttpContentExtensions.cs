@@ -55,7 +55,7 @@ namespace ServiceFabric.Utils.Http.Extensions
         /// property set to <typeparam name="TExpectedMessageType"/></returns>
         public static bool TryReadAsApiResponseMessage<TExpectedMessageType>(
             this HttpContent content, 
-            out ApiResponseMessage<TExpectedMessageType> apiResponseMessage) where TExpectedMessageType : new()
+            out ApiResponseMessage<TExpectedMessageType> apiResponseMessage)
         {
             var json = content.ReadAsStringAsync().Result;
             var parsed = json.TryParse<ApiResponseMessage<TExpectedMessageType>>();
@@ -80,7 +80,7 @@ namespace ServiceFabric.Utils.Http.Extensions
         /// <returns><see cref="ApiResponseMessage{TMessageType}"/> with the <see cref="ApiResponseMessage{TMessageType}.Message"/> 
         /// property set to <typeparam name="TExpectedMessageType"/></returns>
         public static async Task<(bool Success, ApiResponseMessage<TExpectedMessageType> ExpectedApiResponseMessage)> 
-            TryReadAsApiResponseMessageAsync<TExpectedMessageType>(this HttpContent content) where TExpectedMessageType : new()
+            TryReadAsApiResponseMessageAsync<TExpectedMessageType>(this HttpContent content)
         {
             var json = await content.ReadAsStringAsync();
 
