@@ -44,7 +44,7 @@ namespace ServiceFabric.Utils.Http.Tests
         }
 
         [TestMethod]
-        public async Task Is_HttpContent_Read_As_ApiResponseMessage_Asynchronously()
+        public async Task Is_HttpContent_Read_As_ApiResponseMessage_Async()
         {
             // Arrange
             HttpContent httpContent = new StringContent(
@@ -71,46 +71,13 @@ namespace ServiceFabric.Utils.Http.Tests
         }
 
         [TestMethod]
-        public void Trying_To_Read_Valid_Json_As_ApiResponseMessage_From_HttpContent_Is_Successful()
+        public async Task Trying_To_Read_Valid_CamelCase_Json_As_ApiResponseMessage_From_HttpContent_Async_Is_Successful()
         {
             // Arrange
             HttpContent httpContent = new StringContent(
-                @"{ ""Code"" : 200,
-                    ""Message"": {""Header"" : ""Test header"", ""Body"" : ""Test body""}, 
-                    ""Info"" : ""Extra info""
-                  }");
-
-
-            var expectedApiResponseMessage = new ApiResponseMessage<ExampleMessageType>()
-            {
-                Code = (HttpStatusCode)200,
-                Message = new ExampleMessageType { Header = "Test header", Body = "Test body" },
-                Info = "Extra info"
-            };
-
-            ApiResponseMessage<ExampleMessageType> actualApiResponseMessage;
-
-            // Act
-            if (!httpContent.TryReadAsApiResponseMessage(out actualApiResponseMessage))
-            {
-                Assert.Fail();
-            }
-
-            // Assert
-            Assert.AreEqual(expectedApiResponseMessage.Code, actualApiResponseMessage.Code);
-            Assert.AreEqual(expectedApiResponseMessage.Message.Header, actualApiResponseMessage.Message.Header);
-            Assert.AreEqual(expectedApiResponseMessage.Message.Body, actualApiResponseMessage.Message.Body);
-            Assert.AreEqual(expectedApiResponseMessage.Info, actualApiResponseMessage.Info);
-        }
-
-        [TestMethod]
-        public async Task Trying_To_Read_Valid_Json_As_ApiResponseMessage_From_HttpContent_Asynchronously_Is_Successful()
-        {
-            // Arrange
-            HttpContent httpContent = new StringContent(
-                @"{ ""Code"" : 200,
-                    ""Message"": {""Header"" : ""Test header"", ""Body"" : ""Test body""}, 
-                    ""Info"" : ""Extra info""
+                @"{ ""code"" : 200,
+                    ""message"": {""header"" : ""Test header"", ""body"" : ""Test body""}, 
+                    ""info"" : ""Extra info""
                   }");
 
 
@@ -142,7 +109,7 @@ namespace ServiceFabric.Utils.Http.Tests
         }
 
         [TestMethod]
-        public async Task Trying_To_Read_As_ApiResponseMessage_Asynchronously_Returns_False_When_Json_Is_Invalid_Format()
+        public async Task Trying_To_Read_As_ApiResponseMessage_Async_Returns_False_When_Json_Is_Invalid_Format()
         {
             // Arrange
             HttpContent httpContent = new StringContent(
@@ -156,7 +123,7 @@ namespace ServiceFabric.Utils.Http.Tests
         }
 
         [TestMethod]
-        public async Task Trying_To_Read_As_ApiResponseMessage_Asynchronously_Returns_False_When_Json_Schema_Is_Invalid()
+        public async Task Trying_To_Read_As_ApiResponseMessage_Async_Returns_False_When_Json_Schema_Is_Invalid()
         {
             // Arrage
             HttpContent httpContent = new StringContent(
