@@ -104,7 +104,6 @@
     <Compile Include="ApiHttpActionResult.cs" />
     <Compile Include="ApiHttpResponseMessage.cs" />
     <Compile Include="Error\ErrorHandler.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\HttpCommunicationClientFactoryExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\NewtonsoftJsonExtensions.cs" />
@@ -115,7 +114,6 @@
     <Compile Include="Error\IErrorHandler.cs" />
     <Compile Include="Error\IErrorStore.cs" />
     <Compile Include="Error\SqlErrorStore.cs" />
-    <Compile Include="IApiResponseMessage.cs" />
     <Compile Include="Logging\IClaimResolver.cs" />
     <Compile Include="Logging\IHeaderFilter.cs" />
     <Compile Include="Logging\ILogHandler.cs" />
