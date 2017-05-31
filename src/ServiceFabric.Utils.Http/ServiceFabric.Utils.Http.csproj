@@ -108,8 +108,8 @@
     <Compile Include="ApiHttpActionResult.cs" />
     <Compile Include="ApiHttpResponseMessage.cs" />
     <Compile Include="Error\ErrorHandler.cs" />
+    <Compile Include="Extensions\HttpCommunicationClientFactoryExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="HttpCommunicationClient.cs" />
     <Compile Include="HttpCommunicationClientFactory.cs" />
     <Compile Include="Extensions\HttpContentExtensions.cs" />

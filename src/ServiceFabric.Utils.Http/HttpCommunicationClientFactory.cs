@@ -43,5 +43,14 @@ namespace ServiceFabric.Utils.Http
                 new[] { new ApiHttpExceptionHandler() }.Union(additionalExceptionHandlers ??
                                                            Enumerable.Empty<IExceptionHandler>());
         }
+
+        /// <summary> 
+        /// Creates a new instance of <see cref="HttpCommunicationClientFactory"/> with default <see cref="ServicePartitionResolver"/>. 
+        /// </summary> 
+        /// <returns></returns> 
+        public static HttpCommunicationClientFactory CreateDefault()
+        {
+            return new HttpCommunicationClientFactory(new ServicePartitionResolver(() => new System.Fabric.FabricClient()));
+        }
     }
 }
