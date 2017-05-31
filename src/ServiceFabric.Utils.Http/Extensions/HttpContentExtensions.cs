@@ -60,6 +60,7 @@ namespace ServiceFabric.Utils.Http.Extensions
             return apiResponseMessage.Message;
         }
 
+
         /// <summary>
         /// Tries to read <see cref="HttpContent"/> as an <see cref="ApiResponseMessage{TMessageType}"/> 
         /// with <see cref="ApiResponseMessage{TMessageType}.Message"/> set to <typeparam name="TExpectedMessageType"/>
