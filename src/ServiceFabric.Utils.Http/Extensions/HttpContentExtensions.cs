@@ -44,6 +44,21 @@ namespace ServiceFabric.Utils.Http.Extensions
         }
 
         /// <summary>
+        /// Read as <see cref="ApiResponseMessage{TExpectedMessageType}"/> and returns only <typeparamref name="TExpectedMessageType"/>.
+        /// </summary>
+        /// <typeparam name="TExpectedMessageType"></typeparam>
+        /// <param name="content">The content.</param>
+        /// <returns>
+        /// <typeparamref name="TExpectedMessageType"/>.
+        /// </returns>
+        public static async Task<TExpectedMessageType> ReadApiResponseMessageAs<TExpectedMessageType>(this HttpContent content)
+        {
+            var json = await content.ReadAsStringAsync();
+            var apiResponseMessage = JsonConvert.DeserializeObject<ApiResponseMessage<TExpectedMessageType>>(json);
+
+            return apiResponseMessage.Message;
+        }
+
         /// Tries to read <see cref="HttpContent"/> as an <see cref="ApiResponseMessage{TMessageType}"/> 
         /// with <see cref="ApiResponseMessage{TMessageType}.Message"/> set to <typeparam name="TExpectedMessageType"/>
         /// as a synchronous operation
