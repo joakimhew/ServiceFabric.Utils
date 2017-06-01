@@ -4,9 +4,11 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text;
 
 namespace ServiceFabric.Utils.Http.Logging
 {
@@ -79,7 +81,7 @@ namespace ServiceFabric.Utils.Http.Logging
         /// <summary>
         /// Gets or sets the Form Collection.
         /// </summary>
-        public IFormCollection Form { get; set; }
+        public string Body { get; set; }
         /// <summary>
         /// Gets or sets the Request Cookies.
         /// </summary>
@@ -177,7 +179,16 @@ namespace ServiceFabric.Utils.Http.Logging
         /// <returns>The current <see cref="Request"/> instance with the Url</returns>
         public Request WithUrl()
         {
-            Url = _context.Request.Uri.ToString();
+            var tempUrl = _context.Request.Uri.ToString();
+            var tempQueryString = _context.Request.QueryString.ToString();
+
+            // Removes the query string from the url
+            if ( !string.IsNullOrWhiteSpace(tempQueryString))
+            {
+                tempUrl.Replace(tempQueryString, string.Empty);
+            }
+
+            Url = tempUrl;
             return this;
         }
 
@@ -219,19 +230,31 @@ namespace ServiceFabric.Utils.Http.Logging
         }
 
         /// <summary>
-        /// Include the Form collection with the request.
+        /// Include the body with the request.
         /// </summary>
-        /// <param name="form">Optional custom form collection</param>
-        /// <returns>The current <see cref="Request"/> instance with the Form collection</returns>
-        public Request WithForm(IFormCollection form = null)
+        /// <param name="form">Optional custom body</param>
+        /// <returns>The current <see cref="Request"/> instance with the body</returns>
+        public Request WithBody(string body = null)
         {
-            if (form == null)
+            if (body == null)
             {
-                Form = _context.Request.ReadFormAsync().Result;
-                return this;
+                // Copy the body to a memory stream
+                var stream = new MemoryStream();                
+                _context.Request.Body.CopyToAsync(stream);
+                
+                // Rewind stream
+                stream.Position = 0;
+
+                // Read content of stream
+                body = new StreamReader(stream).ReadToEnd();
+                
+                // Rewind stream again and replace the request body with the memory stream,
+                // since we have consumed the original stream when we copied it
+                stream.Position = 0;
+                _context.Request.Body = stream;
             }
 
-            Form = form;
+            Body = body;
             return this;
         }
 
