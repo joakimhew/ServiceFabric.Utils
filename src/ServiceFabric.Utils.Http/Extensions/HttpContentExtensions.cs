@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ServiceFabricServiceModel;
+using Newtonsoft.Json.Serialization;
 
 namespace ServiceFabric.Utils.Http.Extensions
 {
@@ -51,7 +51,8 @@ namespace ServiceFabric.Utils.Http.Extensions
         /// <returns>
         /// <typeparamref name="TExpectedMessageType"/>.
         /// </returns>
-        public static async Task<TExpectedMessageType> ReadApiResponseMessageAs<TExpectedMessageType>(this HttpContent content)
+        public static async Task<TExpectedMessageType> ReadApiResponseMessageAs<TExpectedMessageType>(
+            this HttpContent content)
         {
             var json = await content.ReadAsStringAsync();
             var apiResponseMessage = JsonConvert.DeserializeObject<ApiResponseMessage<TExpectedMessageType>>(json);
@@ -59,6 +60,8 @@ namespace ServiceFabric.Utils.Http.Extensions
             return apiResponseMessage.Message;
         }
 
+
+        /// <summary>
         /// Tries to read <see cref="HttpContent"/> as an <see cref="ApiResponseMessage{TMessageType}"/> 
         /// with <see cref="ApiResponseMessage{TMessageType}.Message"/> set to <typeparam name="TExpectedMessageType"/>
         /// as a synchronous operation
@@ -69,8 +72,27 @@ namespace ServiceFabric.Utils.Http.Extensions
         /// <returns><see cref="ApiResponseMessage{TMessageType}"/> with the <see cref="ApiResponseMessage{TMessageType}.Message"/> 
         /// property set to <typeparam name="TExpectedMessageType"/></returns>
         public static bool TryReadAsApiResponseMessage<TExpectedMessageType>(
+            this HttpContent content,
+            out ApiResponseMessage<TExpectedMessageType> apiResponseMessage)
+        {
+            return TryReadAsApiResponseMessage(content, out apiResponseMessage, new CamelCasePropertyNamesContractResolver());
+        }
+
+        /// <summary>
+        /// Tries to read <see cref="HttpContent"/> as an <see cref="ApiResponseMessage{TMessageType}"/> 
+        /// with <see cref="ApiResponseMessage{TMessageType}.Message"/> set to <typeparam name="TExpectedMessageType"/>
+        /// as a synchronous operation
+        /// </summary>
+        /// <typeparam name="TExpectedMessageType"></typeparam>
+        /// <param name="content"></param>
+        /// <param name="apiResponseMessage"></param>
+        /// <param name="contractResolver">Which contract resolver to use for deserializing Json. Default is <see cref="CamelCasePropertyNamesContractResolver"/></param>
+        /// <returns><see cref="ApiResponseMessage{TMessageType}"/> with the <see cref="ApiResponseMessage{TMessageType}.Message"/> 
+        /// property set to <typeparam name="TExpectedMessageType"/></returns>
+        public static bool TryReadAsApiResponseMessage<TExpectedMessageType>(
             this HttpContent content, 
-            out ApiResponseMessage<TExpectedMessageType> apiResponseMessage) where TExpectedMessageType : new()
+            out ApiResponseMessage<TExpectedMessageType> apiResponseMessage,
+            IContractResolver contractResolver)
         {
             var json = content.ReadAsStringAsync().Result;
             var parsed = json.TryParse<ApiResponseMessage<TExpectedMessageType>>();
@@ -94,8 +116,27 @@ namespace ServiceFabric.Utils.Http.Extensions
         /// <param name="content"></param>
         /// <returns><see cref="ApiResponseMessage{TMessageType}"/> with the <see cref="ApiResponseMessage{TMessageType}.Message"/> 
         /// property set to <typeparam name="TExpectedMessageType"/></returns>
+        public static async Task<(bool Success, ApiResponseMessage<TExpectedMessageType> ExpectedApiResponseMessage)>
+            TryReadAsApiResponseMessageAsync<TExpectedMessageType>(this HttpContent content)
+        {
+            return await TryReadAsApiResponseMessageAsync<TExpectedMessageType>(content,
+                new CamelCasePropertyNamesContractResolver());
+        }
+
+        /// <summary>
+        /// Tries to read <see cref="HttpContent"/> as an <see cref="ApiResponseMessage{TMessageType}"/> 
+        /// with <see cref="ApiResponseMessage{TMessageType}.Message"/> set to <typeparam name="TExpectedMessageType"/>
+        /// as an asynchronous operation
+        /// </summary>
+        /// <typeparam name="TExpectedMessageType"></typeparam>
+        /// <param name="content"></param>
+        /// <param name="contractResolver">Which contract resolver to use for deserializing Json. Default is <see cref="CamelCasePropertyNamesContractResolver"/></param>
+        /// <returns><see cref="ApiResponseMessage{TMessageType}"/> with the <see cref="ApiResponseMessage{TMessageType}.Message"/> 
+        /// property set to <typeparam name="TExpectedMessageType"/></returns>
         public static async Task<(bool Success, ApiResponseMessage<TExpectedMessageType> ExpectedApiResponseMessage)> 
-            TryReadAsApiResponseMessageAsync<TExpectedMessageType>(this HttpContent content) where TExpectedMessageType : new()
+            TryReadAsApiResponseMessageAsync<TExpectedMessageType>(
+            this HttpContent content,
+            IContractResolver contractResolver)
         {
             var json = await content.ReadAsStringAsync();
 
