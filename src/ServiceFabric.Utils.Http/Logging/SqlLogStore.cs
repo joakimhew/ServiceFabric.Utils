@@ -32,9 +32,9 @@ namespace ServiceFabric.Utils.Http.Logging
 
             var result = await _dbConnection.ExecuteAsync(
                 @"INSERT INTO [dbo].[Request] 
-                (Id, Username, ApplicationName, ApplicationVersion, MachineName, Created, Url, HttpMethod, IpAddress, QueryString, FullJson) 
+                (Id, Username, ApplicationName, ApplicationVersion, MachineName, Created, Url, HttpMethod, IpAddress, Body, QueryString, FullJson) 
                 VALUES 
-                (@Id, @Username, @ApplicationName, @ApplicationVersion, @MachineName, @Created, @Url, @HttpMethod, @IpAddress, @QueryString, @FullJson)",
+                (@Id, @Username, @ApplicationName, @ApplicationVersion, @MachineName, @Created, @Url, @HttpMethod, @IpAddress, @Body, @QueryString, @FullJson)",
                 new
                 {
                     request.Id,
@@ -46,6 +46,7 @@ namespace ServiceFabric.Utils.Http.Logging
                     request.Url,
                     request.HttpMethod,
                     request.IpAddress,
+                    request.Body,
                     QueryString = request.QueryString.ToString(),
                     request.FullJson
                 });

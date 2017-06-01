@@ -67,7 +67,7 @@ namespace ServiceFabric.Utils.Http.Logging
                 .WithClaims()
                 .WithUsername()
                 .WithCookies()
-                .WithForm()
+                .WithBody()
                 .WithHttpMethod()
                 .WithIpAddress()
                 .WithMachineName()
