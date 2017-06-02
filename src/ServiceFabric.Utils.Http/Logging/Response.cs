@@ -175,7 +175,7 @@ namespace ServiceFabric.Utils.Http.Logging
         {
             if (responseHeaders == null)
             {
-                ResponseHeaders = _context.Response.Headers;
+                ResponseHeaders = new HeaderDictionary( _context.Response.Headers );
                 return this;
             }
 
