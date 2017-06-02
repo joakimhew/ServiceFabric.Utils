@@ -6,7 +6,7 @@ namespace ServiceFabric.Utils.Http.Logging
     /// <summary>
     /// Logs a <see cref="Request"/> or <see cref="Response"/>.
     /// </summary>
-    public interface ILogStore : IDisposable
+    public interface ILogStore
     {
         /// <summary>
         /// Add a <see cref="Request"/>.

@@ -33,7 +33,15 @@ namespace ServiceFabric.Utils.Http.Middlewares
         /// <returns><see cref="Task"/></returns>
         public override async Task Invoke(IOwinContext context)
         {
-            var requestId = await _logHandler.LogRequestAsync(context);
+            Guid requestId = Guid.Empty;
+            try
+            {
+                requestId = await _logHandler.LogRequestAsync(context);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -43,7 +51,14 @@ namespace ServiceFabric.Utils.Http.Middlewares
             var elapsedMilliseconds = stopWatch.ElapsedMilliseconds;
             stopWatch.Stop();
 
-            await _logHandler.LogResponseAsync(context, requestId, elapsedMilliseconds);
+            try
+            {
+                await _logHandler.LogResponseAsync(context, requestId, elapsedMilliseconds);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
         }
     }
 }
