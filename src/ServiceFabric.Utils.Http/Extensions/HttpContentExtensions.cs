@@ -51,7 +51,7 @@ namespace ServiceFabric.Utils.Http.Extensions
         /// <returns>
         /// <typeparamref name="TExpectedMessageType"/>.
         /// </returns>
-        public static async Task<TExpectedMessageType> ReadApiResponseMessageAs<TExpectedMessageType>(
+        public static async Task<TExpectedMessageType> ReadApiResponseMessageAsAsync<TExpectedMessageType>(
             this HttpContent content)
         {
             var json = await content.ReadAsStringAsync();
