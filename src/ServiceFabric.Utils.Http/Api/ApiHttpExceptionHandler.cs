@@ -10,7 +10,7 @@ using ServiceFabric.Utils.Http.Error;
 using IExceptionHandler = Microsoft.ServiceFabric.Services.Communication.Client.IExceptionHandler;
 
 
-namespace ServiceFabric.Utils.Http
+namespace ServiceFabric.Utils.Api
 {
     public class ApiHttpExceptionHandler : ExceptionHandler, IExceptionHandler
     {

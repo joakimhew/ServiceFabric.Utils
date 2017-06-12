@@ -7,8 +7,8 @@
     <ProjectGuid>{D8E64842-C0E6-498E-AC11-AF1BFD335BD9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServiceFabric.Utils.Http</RootNamespace>
-    <AssemblyName>ServiceFabric.Utils.Http</AssemblyName>
+    <RootNamespace>ServiceFabric.Utils</RootNamespace>
+    <AssemblyName>ServiceFabric.Utils</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -99,7 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiException.cs" />
+    <Compile Include="Api\ApiException.cs" />
     <Compile Include="CommunicationClients\WebSocket\IWebSocketConnectionHandler.cs" />
     <Compile Include="CommunicationClients\WebSocket\IWebSocketSerializer.cs" />
     <Compile Include="CommunicationClients\WebSocket\ProtobufWebSocketSerializer.cs" />
@@ -112,17 +112,17 @@
     <Compile Include="CommunicationClients\WebSocket\WebSocketResponseMessage.cs" />
     <Compile Include="CommunicationClients\WebSocket\WebSocketResult.cs" />
     <Compile Include="DelegatingHandlers\ApiHttpDelegatingHandler.cs" />
-    <Compile Include="ApiHttpExceptionHandler.cs" />
-    <Compile Include="ApiResponseMessage.cs" />
+    <Compile Include="Api\ApiHttpExceptionHandler.cs" />
+    <Compile Include="Api\ApiResponseMessage.cs" />
     <Compile Include="Error\Error.cs" />
-    <Compile Include="ApiHttpActionResult.cs" />
-    <Compile Include="ApiHttpResponseMessage.cs" />
+    <Compile Include="Api\ApiHttpActionResult.cs" />
+    <Compile Include="Api\ApiHttpResponseMessage.cs" />
     <Compile Include="Error\ErrorHandler.cs" />
     <Compile Include="Extensions\HttpCommunicationClientFactoryExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\NewtonsoftJsonExtensions.cs" />
-    <Compile Include="HttpCommunicationClient.cs" />
-    <Compile Include="HttpCommunicationClientFactory.cs" />
+    <Compile Include="CommunicationClients\Http\HttpCommunicationClient.cs" />
+    <Compile Include="CommunicationClients\Http\HttpCommunicationClientFactory.cs" />
     <Compile Include="Extensions\HttpContentExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Error\IErrorHandler.cs" />
