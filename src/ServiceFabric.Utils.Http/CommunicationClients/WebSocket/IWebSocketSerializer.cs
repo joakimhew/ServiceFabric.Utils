@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
+namespace ServiceFabric.Utils.CommunicationClients.WebSocket
 {
+    /// <summary>
+    /// Used for serializing websocket IPC traffic
+    /// </summary>
     public interface IWebSocketSerializer
     {
         Task<byte[]> SerializeAsync<T>(T value);

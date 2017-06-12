@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -9,18 +6,32 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Owin;
 using ServiceFabric.Utils.Http.Error;
+using ServiceFabric.Utils.Api;
 
-namespace ServiceFabric.Utils.Http.DelegatingHandlers
+namespace ServiceFabric.Utils.DelegatingHandlers
 {
+    /// <summary>
+    /// Used to catch HttpErrors and log using <see cref="IErrorHandler"/>
+    /// </summary>
     public class ApiHttpDelegatingHandler : DelegatingHandler
     {
         private readonly IErrorHandler _errorHandler;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ApiHttpDelegatingHandler"/>
+        /// </summary>
+        /// <param name="errorHandler"></param>
         public ApiHttpDelegatingHandler(IErrorHandler errorHandler)
         {
             _errorHandler = errorHandler;
         }
 
+        /// <summary>
+        /// Sends the request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
            CancellationToken cancellationToken)
         {
@@ -32,6 +43,12 @@ namespace ServiceFabric.Utils.Http.DelegatingHandlers
                 : await DefaultResponseMessageHandler(context, response);
         }
 
+        /// <summary>
+        /// if <see cref="ResponseMessageHandler"/> is not set explicitly this will be called instead.
+        /// </summary>
+        /// <param name="context"><see cref="IOwinContext"/> used to for logging</param>
+        /// <param name="response">The <see cref="HttpResponseMessage"/> to return once the message has been handled</param>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> DefaultResponseMessageHandler(IOwinContext context, HttpResponseMessage response)
         {
             if (response.StatusCode == HttpStatusCode.InternalServerError)
@@ -41,10 +58,6 @@ namespace ServiceFabric.Utils.Http.DelegatingHandlers
 
             if (!response.TryGetContentValue(out httpError))
                 return response;
-
-            DebugHttpErrors("HTTPERROR MAIN", httpError);
-            DebugHttpErrors("HTTPERROR INNER", httpError.InnerException);
-            DebugHttpErrors("HTTPERROR MODELSTATE", httpError.ModelState);
 
             Guid errorId;
 
@@ -57,40 +70,6 @@ namespace ServiceFabric.Utils.Http.DelegatingHandlers
                         httpError.Message,
                         errorId == Guid.Empty ? null : errorId.ToString());
             }
-        }
-
-        private void DebugHttpErrors(string header, HttpError httpError)
-        {
-            Debug.WriteLine($"{Environment.NewLine}------ {header} start -------");
-
-            if (httpError == null)
-            {
-                Debug.WriteLine($"No HttpError for {header}");
-            }
-            else
-            {
-                Debug.WriteLine($"--- {header} PROPERTIES ---");
-                WriteAllHttpProperties(httpError);
-
-                Debug.WriteLine($"--- {header} KEYS ---");
-                WriteAllHttpErrorKeys(httpError.ToList());
-            }
-
-            Debug.WriteLine($"------ end {header} end -------{Environment.NewLine}");
-        }
-
-        private void WriteAllHttpProperties(HttpError httpError)
-        {
-            Debug.WriteLine($"Message: {httpError.Message}");
-            Debug.WriteLine($"Message details: {httpError.MessageDetail}");
-            Debug.WriteLine($"Exception message: {httpError.ExceptionMessage}");
-            Debug.WriteLine($"Exception type: {httpError.ExceptionType}");
-            Debug.WriteLine($"StackTrace: {httpError.StackTrace}");
-        }
-
-        private void WriteAllHttpErrorKeys(List<KeyValuePair<string, object>> keys)
-        {
-           keys.ForEach(x => { Debug.WriteLine($"KEY: {x.Key} | VALUE: {x.Value}");});
         }
 
         public event Func<IOwinContext, HttpResponseMessage, HttpResponseMessage> ResponseMessageHandler;

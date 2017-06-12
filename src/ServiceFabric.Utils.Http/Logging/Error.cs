@@ -6,14 +6,21 @@ using Microsoft.Owin;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace ServiceFabric.Utils.Http.Error
+namespace ServiceFabric.Utils.Logging
 {
+    /// <summary>
+    ///  Used to generate an <see cref="Error"/> object containing useful information from an HTTP request
+    /// </summary>
     public class Error
     {
         internal const string CollectionErrorKey = "CollectionFetchError";
         private readonly Exception _ex;
         private readonly IOwinContext _context;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Error"/>
+        /// </summary>
+        /// <param name="context">The <see cref="IOwinContext"/> that caused the error</param>
         public Error(IOwinContext context)
         {
             _context = context;
@@ -21,6 +28,11 @@ namespace ServiceFabric.Utils.Http.Error
             Created = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Error"/>
+        /// </summary>
+        /// <param name="ex">The exception to use for the instance</param>
+        /// <param name="context">The <see cref="IOwinContext"/> that caused the error</param>
         public Error(Exception ex, IOwinContext context)
         {
             _ex = ex;
@@ -52,6 +64,9 @@ namespace ServiceFabric.Utils.Http.Error
         public RequestCookieCollection Cookies { get; set; }
         public IHeaderDictionary RequestHeaders { get; set; }
 
+        /// <summary>
+        /// All of the current instance of <see cref="Error"/>'s properties serialized using <see cref="CamelCasePropertyNamesContractResolver"/>
+        /// </summary>
         [JsonIgnore]
         public string FullJson
         {
@@ -341,7 +356,10 @@ namespace ServiceFabric.Utils.Http.Error
             return this;
         }
 
-
+        /// <summary>
+        /// Includes all context related properties in the current instance of <see cref="Error"/>
+        /// </summary>
+        /// <returns></returns>
         public Error WithAllContextProperties()
         {
             WithHost();
@@ -357,6 +375,10 @@ namespace ServiceFabric.Utils.Http.Error
             return this;
         }
 
+        /// <summary>
+        /// Includes all exception related properties in the current instance of <see cref="Error"/>
+        /// </summary>
+        /// <returns></returns>
         public Error WithAllExceptionProperties()
         {
             WithType();
@@ -368,6 +390,7 @@ namespace ServiceFabric.Utils.Http.Error
 
             return this;
         }
+
 
         private int? GetHash()
         {

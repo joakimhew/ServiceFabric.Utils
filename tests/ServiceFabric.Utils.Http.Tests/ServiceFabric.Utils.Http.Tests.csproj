@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ServiceFabric.Utils.Http\ServiceFabric.Utils.Http.csproj">
+    <ProjectReference Include="..\..\src\ServiceFabric.Utils.Http\ServiceFabric.Utils.csproj">
       <Project>{d8e64842-c0e6-498e-ac11-af1bfd335bd9}</Project>
-      <Name>ServiceFabric.Utils.Http</Name>
+      <Name>ServiceFabric.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

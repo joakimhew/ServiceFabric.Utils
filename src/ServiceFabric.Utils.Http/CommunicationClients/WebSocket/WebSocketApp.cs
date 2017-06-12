@@ -7,7 +7,7 @@ using System.Threading;
 using System.Net;
 using Microsoft.Owin.Logging;
 
-namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
+namespace ServiceFabric.Utils.CommunicationClients.WebSocket
 {
     public class WebSocketApp : IDisposable
     {
@@ -15,14 +15,14 @@ namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
             Encoding.Default.GetBytes("Uncaught error in main processing loop!");
 
         private string address;
-        private CancellationToken cancellationToken;
-        private CancellationTokenSource cancellationTokenSource;
+        private CancellationToken _cancellationToken;
+        private CancellationTokenSource _cancellationTokenSource;
         private HttpListener httpListener;
 
         public WebSocketApp(string address)
         {
             this.address = address;
-            this.cancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
         public void Dispose()
@@ -30,20 +30,20 @@ namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
 
             try
             {
-                if (this.cancellationTokenSource != null && !this.cancellationTokenSource.IsCancellationRequested)
+                if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
                 {
-                    this.cancellationTokenSource.Cancel();
+                    _cancellationTokenSource.Cancel();
                 }
 
-                if (this.httpListener != null && this.httpListener.IsListening)
+                if (httpListener != null && httpListener.IsListening)
                 {
-                    this.httpListener.Stop();
-                    this.httpListener.Close();
+                    httpListener.Stop();
+                    httpListener.Close();
                 }
 
-                if (this.cancellationTokenSource != null && !this.cancellationTokenSource.IsCancellationRequested)
+                if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
                 {
-                    this.cancellationTokenSource.Dispose();
+                    _cancellationTokenSource.Dispose();
                 }
             }
             catch (ObjectDisposedException)
@@ -61,33 +61,33 @@ namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
 
         public void Init()
         {
-            if (!this.address.EndsWith("/"))
+            if (!address.EndsWith("/"))
             {
-                this.address += "/";
+                address += "/";
             }
 
-            this.httpListener = new HttpListener();
-            this.httpListener.Prefixes.Add(this.address);
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.cancellationToken = this.cancellationTokenSource.Token;
-            this.httpListener.Start();
+            httpListener = new HttpListener();
+            httpListener.Prefixes.Add(address);
+            _cancellationTokenSource = new CancellationTokenSource();
+            _cancellationToken = _cancellationTokenSource.Token;
+            httpListener.Start();
         }
 
         public async Task StartAsync(
             Func<CancellationToken, HttpListenerContext, Task<bool>> processActionAsync
             )
         {
-            while (this.httpListener.IsListening)
+            while (httpListener.IsListening)
             {
                 HttpListenerContext context = null;
                 try
                 {
-                    context = await this.httpListener.GetContextAsync();
+                    context = await httpListener.GetContextAsync();
                 }
                 catch (Exception ex)
                 {
                     // check if the exception is caused due to cancellation
-                    if (this.cancellationToken.IsCancellationRequested)
+                    if (_cancellationToken.IsCancellationRequested)
                     {
                         return;
                     }
@@ -95,13 +95,13 @@ namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
                     continue;
                 }
 
-                if (this.cancellationToken.IsCancellationRequested)
+                if (_cancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
 
                 // a new connection is established, dispatch to the callback function
-                this.DispatchConnectedContext(context, processActionAsync);
+                DispatchConnectedContext(context, processActionAsync);
             }
         }
 
@@ -111,7 +111,7 @@ namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
             )
         {
             // do not await on processAction since we don't want to block on waiting for more connections
-            processActionAsync(this.cancellationToken, context)
+            processActionAsync(_cancellationToken, context)
                 .ContinueWith(
                     t =>
                     {
@@ -129,7 +129,7 @@ namespace ServiceFabric.Utils.Http.CommunicationClients.WebSocket
                             }
                         }
                     },
-                    this.cancellationToken);
+                    _cancellationToken);
         }
     }
 }
