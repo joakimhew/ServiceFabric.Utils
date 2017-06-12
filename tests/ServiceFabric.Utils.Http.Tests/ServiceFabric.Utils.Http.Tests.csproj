@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="HttpContentExtensionUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebSocketCommunicationClientTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
