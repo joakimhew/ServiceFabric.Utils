@@ -2,9 +2,10 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ServiceFabric.Utils.Http.Extensions;
+using ServiceFabric.Utils.Extensions;
+using ServiceFabric.Utils.Api;
 
-namespace ServiceFabric.Utils.Http.Tests
+namespace ServiceFabric.Utils.Tests
 {
     public class ExampleMessageType
     {

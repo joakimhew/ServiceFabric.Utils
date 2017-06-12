@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceFabric.Utils.Http.Tests
+namespace ServiceFabric.Utils.Tests
 {
     [TestClass]
     class WebSocketCommunicationClientTests
